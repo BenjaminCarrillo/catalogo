@@ -9,11 +9,10 @@ import ecomarket.catalogo.model.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    // findByCodigo() -> busca por ISBN (codigo unico del producto)
-    Optional<Producto> findByIsbn(String isbn);
+    List<Producto> findByMarca(String marca);
 
-    // buscarPorNombre() -> coincidencia parcial en el titulo, sin distinguir mayusculas
-    List<Producto> findByTituloContainingIgnoreCase(String titulo);
+    // buscarPorNombre() -> 
+    List<Producto> findByTituloContainingIgnoreCase(String nombre);
 
     // findByRangoPrecio()
     List<Producto> findByPrecioUnitarioBetween(Integer minimo, Integer maximo);

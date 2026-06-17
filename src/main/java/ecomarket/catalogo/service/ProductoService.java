@@ -34,10 +34,10 @@ public class ProductoService {
 
     public Producto actualizarProducto(Long id, Producto datos) {
         return productoRepository.findById(id).map(producto -> {
-            producto.setTitulo(datos.getTitulo());
+            producto.setNombre(datos.getNombre());
             producto.setDescripcion(datos.getDescripcion());
             producto.setTipoProducto(datos.getTipoProducto());
-            producto.setIsbn(datos.getIsbn());
+            producto.setMarca(datos.getMarca());
             producto.setPrecioUnitario(datos.getPrecioUnitario());
             producto.setEstado(datos.isEstado());
             producto.setIdInventario(datos.getIdInventario());
@@ -62,8 +62,8 @@ public class ProductoService {
         return productoRepository.findByTituloContainingIgnoreCase(nombre);
     }
 
-    public Optional<Producto> findByCodigo(String isbn) {
-        return productoRepository.findByIsbn(isbn);
+    public List<Producto> findByMarca(String marca) {
+        return productoRepository.findByMarca(marca);
     }
 
 }

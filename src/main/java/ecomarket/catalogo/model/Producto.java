@@ -44,13 +44,13 @@ public class Producto {
     private String tipoProducto;
 
     @Column(length = 150, nullable = false)
-    private String titulo;
+    private String nombre;
+
+    @Column(length = 150, nullable = false)
+    private String marca;
 
     @Column(length = 500)
     private String descripcion;
-
-    @Column(length = 20)
-    private String isbn;
 
     private Integer precioUnitario;
 
