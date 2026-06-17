@@ -1,18 +1,16 @@
 package ecomarket.catalogo.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,21 +21,22 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Catalogo {
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCatalogo;
+    private Long idCategoria;
 
     @Column(length = 100, nullable = false)
-    private String nombreCatalogo;
+    private String nombreCategoria;
 
-    @Column(nullable = false)
-    private LocalDate fechaActualizacion;
+    @Column(length = 50)
+    private String tipoProducto;
 
-    // Un catalogo agrupa muchos productos
-    @OneToMany(mappedBy = "catalogo", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("catalogo-producto")
+    // Lado inverso de la relacion muchos-a-muchos con Producto.
+    // Se ignora en el JSON para no provocar recursion infinita.
+    @ManyToMany(mappedBy = "categorias")
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Producto> productos = new ArrayList<>();
