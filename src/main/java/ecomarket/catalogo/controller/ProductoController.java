@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ecomarket.catalogo.model.Producto;
 import ecomarket.catalogo.service.ProductoService;
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/v1/productos")
 public class ProductoController {
 
     @Autowired

@@ -18,7 +18,7 @@ import ecomarket.catalogo.model.Catalogo;
 import ecomarket.catalogo.service.CatalogoService;
 
 @RestController
-@RequestMapping("/api/catalogos")
+@RequestMapping("/api/v1/catalogos")
 public class CatalogoController {
 
     @Autowired
