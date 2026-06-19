@@ -12,7 +12,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByMarca(String marca);
 
     // buscarPorNombre() -> 
-    List<Producto> findByTituloContainingIgnoreCase(String nombre);
+    List<Producto> findByNombreContainingIgnoreCase(String nombre);
 
     // findByRangoPrecio()
     List<Producto> findByPrecioUnitarioBetween(Integer minimo, Integer maximo);
