@@ -59,7 +59,7 @@ public class ProductoService {
     }
 
     public List<Producto> buscarPorNombre(String nombre) {
-        return productoRepository.findByTituloContainingIgnoreCase(nombre);
+        return productoRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
     public List<Producto> findByMarca(String marca) {
