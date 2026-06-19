@@ -54,7 +54,7 @@ public class Producto {
 
     private Integer precioUnitario;
 
-    private boolean estado;
+    private Boolean estado;
 
     // Muchos productos pertenecen a un catalogo
     @ManyToOne(fetch = FetchType.LAZY)
