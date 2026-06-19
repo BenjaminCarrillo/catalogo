@@ -39,7 +39,7 @@ public class ProductoService {
             producto.setTipoProducto(datos.getTipoProducto());
             producto.setMarca(datos.getMarca());
             producto.setPrecioUnitario(datos.getPrecioUnitario());
-            producto.setEstado(datos.isEstado());
+            producto.setEstado(datos.getEstado());
             producto.setIdInventario(datos.getIdInventario());
             producto.setCategorias(datos.getCategorias());
             return productoRepository.save(producto);
