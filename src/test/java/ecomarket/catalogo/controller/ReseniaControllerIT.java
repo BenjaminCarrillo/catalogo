@@ -51,8 +51,6 @@ class ReseniaControllerIT {
         return p;
     }
 
-    // JSON a mano: asegura que el "producto" viaje con su id
-    // (serializar la entidad lo borraba por el @JsonBackReference)
     private String jsonResenia(Long idProducto) {
         return """
                 {
@@ -78,7 +76,6 @@ class ReseniaControllerIT {
 
     @Test
     void testCrearReseniaProductoInexistente404() throws Exception {
-        // no existe producto con id 999 -> el service devuelve null -> 404
         mockMvc.perform(post("/api/v1/resenias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonResenia(999L)))
