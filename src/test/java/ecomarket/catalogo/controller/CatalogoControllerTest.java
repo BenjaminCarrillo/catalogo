@@ -53,7 +53,6 @@ public class CatalogoControllerTest {
     void testGetCatalogosConContenido() throws Exception {
         Mockito.when(catalogoService.listarCatalogo())
                 .thenReturn(List.of(catalogo(1L, "Catalogo Verano")));
-
         mockMvc.perform(get("/api/v1/catalogos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -63,7 +62,6 @@ public class CatalogoControllerTest {
     @Test
     void testGetCatalogosVacio204() throws Exception {
         Mockito.when(catalogoService.listarCatalogo()).thenReturn(Collections.emptyList());
-
         mockMvc.perform(get("/api/v1/catalogos"))
                 .andExpect(status().isNoContent());
     }
@@ -72,7 +70,6 @@ public class CatalogoControllerTest {
     void testGetCatalogoExistente() throws Exception {
         Mockito.when(catalogoService.findById(1L))
                 .thenReturn(Optional.of(catalogo(1L, "Catalogo Verano")));
-
         mockMvc.perform(get("/api/v1/catalogos/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombreCatalogo").value("Catalogo Verano"));
@@ -81,7 +78,6 @@ public class CatalogoControllerTest {
     @Test
     void testGetCatalogoInexistente204() throws Exception {
         Mockito.when(catalogoService.findById(99L)).thenReturn(Optional.empty());
-
         mockMvc.perform(get("/api/v1/catalogos/99"))
                 .andExpect(status().isNoContent());
     }
@@ -91,7 +87,6 @@ public class CatalogoControllerTest {
         Catalogo nuevo = catalogo(null, "Catalogo Verano");
         Mockito.when(catalogoService.crearCatalogo(any(Catalogo.class)))
                 .thenReturn(catalogo(1L, "Catalogo Verano"));
-
         mockMvc.perform(post("/api/v1/catalogos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nuevo)))
@@ -104,7 +99,6 @@ public class CatalogoControllerTest {
         Catalogo nuevo = catalogo(null, "Catalogo Verano");
         Mockito.when(catalogoService.crearCatalogo(any(Catalogo.class)))
                 .thenThrow(new RuntimeException("error"));
-
         mockMvc.perform(post("/api/v1/catalogos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nuevo)))
@@ -115,7 +109,6 @@ public class CatalogoControllerTest {
     void testPutCatalogo200() throws Exception {
         Mockito.when(catalogoService.actualizarCatalogo(eq(1L), any(Catalogo.class)))
                 .thenReturn(catalogo(1L, "Catalogo Actualizado"));
-
         mockMvc.perform(put("/api/v1/catalogos/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(catalogo(null, "Catalogo Actualizado"))))
@@ -136,7 +129,6 @@ public class CatalogoControllerTest {
     @Test
     void testDeleteCatalogo204() throws Exception {
         Mockito.doNothing().when(catalogoService).eliminarCatalogo(1L);
-
         mockMvc.perform(delete("/api/v1/catalogos/1"))
                 .andExpect(status().isNoContent());
     }

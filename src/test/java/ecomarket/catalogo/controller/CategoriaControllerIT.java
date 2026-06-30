@@ -49,13 +49,11 @@ class CategoriaControllerIT {
     @Test
     void testCrearYListar() throws Exception {
         Categoria nueva = categoria("Frutas", "ALIMENTO");
-
         mockMvc.perform(post("/api/v1/categorias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nueva)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idCategoria").exists());
-
         mockMvc.perform(get("/api/v1/categorias"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombreCategoria").value("Frutas"));
@@ -64,7 +62,6 @@ class CategoriaControllerIT {
     @Test
     void testObtenerPorId() throws Exception {
         Categoria guardada = categoriaRepository.save(categoria("Lacteos", "ALIMENTO"));
-
         mockMvc.perform(get("/api/v1/categorias/" + guardada.getIdCategoria()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombreCategoria").value("Lacteos"));
@@ -73,7 +70,6 @@ class CategoriaControllerIT {
     @Test
     void testEliminar() throws Exception {
         Categoria guardada = categoriaRepository.save(categoria("Borrar", "X"));
-
         mockMvc.perform(delete("/api/v1/categorias/" + guardada.getIdCategoria()))
                 .andExpect(status().isNoContent());
         mockMvc.perform(get("/api/v1/categorias/" + guardada.getIdCategoria()))

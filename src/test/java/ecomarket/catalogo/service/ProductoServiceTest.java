@@ -46,9 +46,7 @@ public class ProductoServiceTest {
         Producto nuevo = producto(null, "Manzana", "Marca1", 500);
         Producto guardado = producto(1L, "Manzana", "Marca1", 500);
         when(productoRepository.save(nuevo)).thenReturn(guardado);
-
         Producto resultado = productoService.registrarProducto(nuevo);
-
         assertThat(resultado.getIdProducto()).isEqualTo(1L);
         verify(productoRepository).save(nuevo);
     }
@@ -56,14 +54,12 @@ public class ProductoServiceTest {
     @Test
     void testListarProductos() {
         when(productoRepository.findAll()).thenReturn(List.of(producto(1L, "Manzana", "Marca1", 500)));
-
         assertThat(productoService.listarProductos()).hasSize(1);
     }
 
     @Test
     void testFindByIdProducto() {
         when(productoRepository.findById(1L)).thenReturn(Optional.of(producto(1L, "Manzana", "Marca1", 500)));
-
         assertThat(productoService.findByIdProducto(1L)).isPresent();
     }
 
@@ -71,7 +67,6 @@ public class ProductoServiceTest {
     void testFindByCategoria() {
         when(productoRepository.findByCategorias_IdCategoria(3L))
                 .thenReturn(List.of(producto(1L, "Manzana", "Marca1", 500)));
-
         assertThat(productoService.findByCategoria(3L)).hasSize(1);
         verify(productoRepository).findByCategorias_IdCategoria(3L);
     }
@@ -81,12 +76,9 @@ public class ProductoServiceTest {
         Producto existente = producto(1L, "Viejo", "M1", 100);
         Producto datos = producto(null, "Nuevo", "M2", 200);
         datos.setCategorias(new ArrayList<>());
-
         when(productoRepository.findById(1L)).thenReturn(Optional.of(existente));
         when(productoRepository.save(any(Producto.class))).thenAnswer(inv -> inv.getArgument(0));
-
         Producto resultado = productoService.actualizarProducto(1L, datos);
-
         assertThat(resultado.getNombre()).isEqualTo("Nuevo");
         assertThat(resultado.getMarca()).isEqualTo("M2");
         assertThat(resultado.getPrecioUnitario()).isEqualTo(200);
@@ -96,7 +88,6 @@ public class ProductoServiceTest {
     @Test
     void testActualizarProductoInexistente() {
         when(productoRepository.findById(99L)).thenReturn(Optional.empty());
-
         assertThat(productoService.actualizarProducto(99L, new Producto())).isNull();
         verify(productoRepository, never()).save(any(Producto.class));
     }
@@ -105,7 +96,6 @@ public class ProductoServiceTest {
     void testFindByRangoPrecio() {
         when(productoRepository.findByPrecioUnitarioBetween(100, 500))
                 .thenReturn(List.of(producto(1L, "Manzana", "Marca1", 300)));
-
         assertThat(productoService.findByRangoPrecio(100, 500)).hasSize(1);
     }
 
@@ -113,7 +103,6 @@ public class ProductoServiceTest {
     void testFindByPrecioMaximo() {
         when(productoRepository.findByPrecioUnitarioLessThanEqual(500))
                 .thenReturn(List.of(producto(1L, "Manzana", "Marca1", 300)));
-
         assertThat(productoService.findByPrecioMaximo(500)).hasSize(1);
     }
 
@@ -121,7 +110,6 @@ public class ProductoServiceTest {
     void testFindByPrecioMinimo() {
         when(productoRepository.findByPrecioUnitarioGreaterThanEqual(100))
                 .thenReturn(List.of(producto(1L, "Manzana", "Marca1", 300)));
-
         assertThat(productoService.findByPrecioMinimo(100)).hasSize(1);
     }
 
@@ -129,7 +117,6 @@ public class ProductoServiceTest {
     void testBuscarPorNombre() {
         when(productoRepository.findByNombreContainingIgnoreCase("man"))
                 .thenReturn(List.of(producto(1L, "Manzana", "Marca1", 300)));
-
         assertThat(productoService.buscarPorNombre("man")).hasSize(1);
     }
 
@@ -137,14 +124,12 @@ public class ProductoServiceTest {
     void testFindByMarca() {
         when(productoRepository.findByMarca("Marca1"))
                 .thenReturn(List.of(producto(1L, "Manzana", "Marca1", 300)));
-
         assertThat(productoService.findByMarca("Marca1")).hasSize(1);
     }
 
     @Test
     void testEliminarProductoExiste() {
         when(productoRepository.existsById(1L)).thenReturn(true);
-
         assertThat(productoService.eliminarProducto(1L)).isTrue();
         verify(productoRepository).deleteById(1L);
     }
@@ -152,7 +137,6 @@ public class ProductoServiceTest {
     @Test
     void testEliminarProductoNoExiste() {
         when(productoRepository.existsById(99L)).thenReturn(false);
-
         assertThat(productoService.eliminarProducto(99L)).isFalse();
         verify(productoRepository, never()).deleteById(any());
     }

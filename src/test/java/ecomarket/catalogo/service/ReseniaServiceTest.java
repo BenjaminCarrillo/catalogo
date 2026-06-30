@@ -53,23 +53,18 @@ public class ReseniaServiceTest {
     void testRegistrarReseniaOk() {
         Resenia entrante = resenia("Buena", 5, productoConId(1L));
         Producto productoReal = productoConId(1L);
-
         when(productoRepository.findById(1L)).thenReturn(Optional.of(productoReal));
         when(reseniaRepository.save(any(Resenia.class))).thenAnswer(inv -> inv.getArgument(0));
-
         Resenia resultado = reseniaService.registrarResenia(entrante);
-
         assertThat(resultado).isNotNull();
-        assertThat(resultado.getProducto()).isEqualTo(productoReal); // asocio el producto real
+        assertThat(resultado.getProducto()).isEqualTo(productoReal);
         verify(reseniaRepository).save(entrante);
     }
 
     @Test
     void testRegistrarReseniaSinProductoDevuelveNull() {
         Resenia entrante = resenia("Sin producto", 4, null);
-
         Resenia resultado = reseniaService.registrarResenia(entrante);
-
         assertThat(resultado).isNull();
         verify(productoRepository, never()).findById(any());
         verify(reseniaRepository, never()).save(any(Resenia.class));
@@ -78,9 +73,7 @@ public class ReseniaServiceTest {
     @Test
     void testRegistrarReseniaProductoSinIdDevuelveNull() {
         Resenia entrante = resenia("Producto sin id", 4, new Producto());
-
         Resenia resultado = reseniaService.registrarResenia(entrante);
-
         assertThat(resultado).isNull();
         verify(productoRepository, never()).findById(any());
         verify(reseniaRepository, never()).save(any(Resenia.class));
@@ -89,11 +82,8 @@ public class ReseniaServiceTest {
     @Test
     void testRegistrarReseniaProductoInexistenteDevuelveNull() {
         Resenia entrante = resenia("Producto fantasma", 3, productoConId(99L));
-
         when(productoRepository.findById(99L)).thenReturn(Optional.empty());
-
         Resenia resultado = reseniaService.registrarResenia(entrante);
-
         assertThat(resultado).isNull();
         verify(reseniaRepository, never()).save(any(Resenia.class));
     }
@@ -101,7 +91,6 @@ public class ReseniaServiceTest {
     @Test
     void testListarResenias() {
         when(reseniaRepository.findAll()).thenReturn(List.of(resenia("A", 5, productoConId(1L))));
-
         assertThat(reseniaService.listarResenias()).hasSize(1);
     }
 
@@ -109,7 +98,6 @@ public class ReseniaServiceTest {
     void testListarPorProducto() {
         when(reseniaRepository.findByProducto_IdProducto(1L))
                 .thenReturn(List.of(resenia("A", 5, productoConId(1L))));
-
         assertThat(reseniaService.listarPorProducto(1L)).hasSize(1);
         verify(reseniaRepository).findByProducto_IdProducto(1L);
     }
@@ -117,7 +105,6 @@ public class ReseniaServiceTest {
     @Test
     void testFindById() {
         when(reseniaRepository.findById(1L)).thenReturn(Optional.of(resenia("A", 5, productoConId(1L))));
-
         assertThat(reseniaService.findById(1L)).isPresent();
     }
 
@@ -125,12 +112,9 @@ public class ReseniaServiceTest {
     void testActualizarReseniaOk() {
         Resenia existente = resenia("Vieja", 2, productoConId(1L));
         Resenia datos = resenia("Nueva", 5, null);
-
         when(reseniaRepository.findById(1L)).thenReturn(Optional.of(existente));
         when(reseniaRepository.save(any(Resenia.class))).thenAnswer(inv -> inv.getArgument(0));
-
         Resenia resultado = reseniaService.actualizarResenia(1L, datos);
-
         assertThat(resultado.getComentario()).isEqualTo("Nueva");
         assertThat(resultado.getCalificacion()).isEqualTo(5);
     }
@@ -138,7 +122,6 @@ public class ReseniaServiceTest {
     @Test
     void testActualizarReseniaInexistente() {
         when(reseniaRepository.findById(99L)).thenReturn(Optional.empty());
-
         assertThat(reseniaService.actualizarResenia(99L, new Resenia())).isNull();
         verify(reseniaRepository, never()).save(any(Resenia.class));
     }
@@ -146,7 +129,6 @@ public class ReseniaServiceTest {
     @Test
     void testEliminarResenia() {
         reseniaService.eliminarResenia(1L);
-
         verify(reseniaRepository).deleteById(1L);
     }
 }

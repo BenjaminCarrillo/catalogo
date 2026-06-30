@@ -54,13 +54,11 @@ class ProductoControllerIT {
     @Test
     void testCrearYListar() throws Exception {
         Producto nuevo = producto("Manzana", "Marca1", 500);
-
         mockMvc.perform(post("/api/v1/productos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nuevo)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idProducto").exists());
-
         mockMvc.perform(get("/api/v1/productos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Manzana"));
@@ -69,7 +67,6 @@ class ProductoControllerIT {
     @Test
     void testObtenerPorId() throws Exception {
         Producto guardado = productoRepository.save(producto("Pera", "Marca2", 700));
-
         mockMvc.perform(get("/api/v1/productos/" + guardado.getIdProducto()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.marca").value("Marca2"));
@@ -79,7 +76,6 @@ class ProductoControllerIT {
     void testActualizar() throws Exception {
         Producto guardado = productoRepository.save(producto("Pera", "Marca2", 700));
         Producto datos = producto("Pera Premium", "Marca2", 950);
-
         mockMvc.perform(put("/api/v1/productos/" + guardado.getIdProducto())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(datos)))
@@ -91,11 +87,8 @@ class ProductoControllerIT {
     @Test
     void testEliminar() throws Exception {
         Producto guardado = productoRepository.save(producto("Borrar", "MarcaX", 100));
-
         mockMvc.perform(delete("/api/v1/productos/" + guardado.getIdProducto()))
                 .andExpect(status().isNoContent());
-
-        // tras borrarlo, obtenerlo da 204 (asi responde este controller)
         mockMvc.perform(get("/api/v1/productos/" + guardado.getIdProducto()))
                 .andExpect(status().isNoContent());
     }
@@ -103,7 +96,6 @@ class ProductoControllerIT {
     @Test
     void testBuscarPorNombre() throws Exception {
         productoRepository.save(producto("Manzana Verde", "Marca1", 500));
-
         mockMvc.perform(get("/api/v1/productos/buscar").param("nombre", "manzana"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Manzana Verde"));
@@ -112,7 +104,6 @@ class ProductoControllerIT {
     @Test
     void testBuscarPorNombreSinResultados204() throws Exception {
         productoRepository.save(producto("Manzana", "Marca1", 500));
-
         mockMvc.perform(get("/api/v1/productos/buscar").param("nombre", "zzz"))
                 .andExpect(status().isNoContent());
     }
@@ -120,7 +111,6 @@ class ProductoControllerIT {
     @Test
     void testPorMarca() throws Exception {
         productoRepository.save(producto("Manzana", "Marca1", 500));
-
         mockMvc.perform(get("/api/v1/productos/marca/Marca1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].marca").value("Marca1"));
@@ -130,7 +120,6 @@ class ProductoControllerIT {
     void testRangoPrecio() throws Exception {
         productoRepository.save(producto("Barato", "M", 200));
         productoRepository.save(producto("Caro", "M", 900));
-
         mockMvc.perform(get("/api/v1/productos/precio/rango").param("min", "100").param("max", "500"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Barato"));
@@ -140,11 +129,9 @@ class ProductoControllerIT {
     void testPrecioMaximoYMinimo() throws Exception {
         productoRepository.save(producto("Barato", "M", 200));
         productoRepository.save(producto("Caro", "M", 900));
-
         mockMvc.perform(get("/api/v1/productos/precio/maximo").param("max", "500"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Barato"));
-
         mockMvc.perform(get("/api/v1/productos/precio/minimo").param("min", "800"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Caro"));

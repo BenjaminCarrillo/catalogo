@@ -50,7 +50,6 @@ public class CategoriaControllerTest {
     void testGetCategoriasConContenido() throws Exception {
         Mockito.when(categoriaService.listarCategorias())
                 .thenReturn(List.of(categoria(1L, "Frutas", "ALIMENTO")));
-
         mockMvc.perform(get("/api/v1/categorias"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -60,7 +59,6 @@ public class CategoriaControllerTest {
     @Test
     void testGetCategoriasVacio204() throws Exception {
         Mockito.when(categoriaService.listarCategorias()).thenReturn(Collections.emptyList());
-
         mockMvc.perform(get("/api/v1/categorias"))
                 .andExpect(status().isNoContent());
     }
@@ -69,7 +67,6 @@ public class CategoriaControllerTest {
     void testGetCategoriaExistente() throws Exception {
         Mockito.when(categoriaService.findById(1L))
                 .thenReturn(Optional.of(categoria(1L, "Frutas", "ALIMENTO")));
-
         mockMvc.perform(get("/api/v1/categorias/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombreCategoria").value("Frutas"));
@@ -78,7 +75,6 @@ public class CategoriaControllerTest {
     @Test
     void testGetCategoriaInexistente204() throws Exception {
         Mockito.when(categoriaService.findById(99L)).thenReturn(Optional.empty());
-
         mockMvc.perform(get("/api/v1/categorias/99"))
                 .andExpect(status().isNoContent());
     }
@@ -88,7 +84,6 @@ public class CategoriaControllerTest {
         Categoria nueva = categoria(null, "Frutas", "ALIMENTO");
         Mockito.when(categoriaService.crearCategoria(any(Categoria.class)))
                 .thenReturn(categoria(1L, "Frutas", "ALIMENTO"));
-
         mockMvc.perform(post("/api/v1/categorias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nueva)))
@@ -101,7 +96,6 @@ public class CategoriaControllerTest {
         Categoria nueva = categoria(null, "Frutas", "ALIMENTO");
         Mockito.when(categoriaService.crearCategoria(any(Categoria.class)))
                 .thenThrow(new RuntimeException("error"));
-
         mockMvc.perform(post("/api/v1/categorias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nueva)))
@@ -111,7 +105,6 @@ public class CategoriaControllerTest {
     @Test
     void testDeleteCategoria204() throws Exception {
         Mockito.doNothing().when(categoriaService).eliminarCategoria(1L);
-
         mockMvc.perform(delete("/api/v1/categorias/1"))
                 .andExpect(status().isNoContent());
     }
