@@ -2,12 +2,15 @@ package ecomarket.catalogo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class CatalogoApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void mainEjecutaAplicacion() {
+        CatalogoApplication.main(new String[]{
+        });
+    }
 }
