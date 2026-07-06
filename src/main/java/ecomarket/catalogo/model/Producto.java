@@ -36,8 +36,6 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProducto;
 
-    // Referencia al microservicio Inventario (no es una relacion JPA,
-    // es un puntero entre servicios, igual que Reserva.idCliente en la base).
     private Long idInventario;
 
     @Column(length = 50)
@@ -52,11 +50,11 @@ public class Producto {
     @Column(length = 500)
     private String descripcion;
 
+    @Column(nullable = false)
     private Integer precioUnitario;
 
     private Boolean estado;
 
-    // Muchos productos pertenecen a un catalogo
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_catalogo")
     @JsonBackReference("catalogo-producto")
@@ -64,14 +62,12 @@ public class Producto {
     @EqualsAndHashCode.Exclude
     private Catalogo catalogo;
 
-    // Un producto tiene muchas resenias
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("producto-resenia")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Resenia> resenias = new ArrayList<>();
 
-    // Relacion muchos-a-muchos con Categoria (lado dueño)
     @ManyToMany
     @JoinTable(name = "producto_categoria",
             joinColumns = @JoinColumn(name = "id_producto"),

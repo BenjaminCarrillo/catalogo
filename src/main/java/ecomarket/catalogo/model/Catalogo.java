@@ -35,7 +35,6 @@ public class Catalogo {
     @Column(nullable = false)
     private LocalDate fechaActualizacion;
 
-    // Un catalogo agrupa muchos productos
     @OneToMany(mappedBy = "catalogo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("catalogo-producto")
     @ToString.Exclude

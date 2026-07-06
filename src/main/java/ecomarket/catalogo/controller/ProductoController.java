@@ -60,8 +60,6 @@ public class ProductoController {
         return new ResponseEntity<>(actualizado, HttpStatus.OK);
     }
 
-    // Busquedas (metodos del diagrama)
-
     @GetMapping("/categoria/{idCategoria}")
     public ResponseEntity<List<Producto>> getPorCategoria(@PathVariable Long idCategoria) {
         List<Producto> productos = productoService.findByCategoria(idCategoria);

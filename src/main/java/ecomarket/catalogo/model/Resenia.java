@@ -33,11 +33,12 @@ public class Resenia {
     @Column(length = 500)
     private String comentario;
 
+    @Column(nullable = false)
     private Integer calificacion;
-
+    
+    @Column(nullable = false)
     private LocalDate fechaResenia;
 
-    // Muchas resenias pertenecen a un producto
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto")
     @JsonBackReference("producto-resenia")

@@ -33,8 +33,6 @@ public class Categoria {
     @Column(length = 50)
     private String tipoProducto;
 
-    // Lado inverso de la relacion muchos-a-muchos con Producto.
-    // Se ignora en el JSON para no provocar recursion infinita.
     @ManyToMany(mappedBy = "categorias")
     @JsonIgnore
     @ToString.Exclude
