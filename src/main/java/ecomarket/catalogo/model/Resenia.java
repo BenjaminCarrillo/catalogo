@@ -12,12 +12,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 
 
 @Entity
@@ -31,12 +34,17 @@ public class Resenia {
     private Long idResenia;
 
     @Column(length = 500)
+    @Size(max = 500, message = "El comentario no puede superar 500 caracteres")
     private String comentario;
 
     @Column(nullable = false)
+    @NotNull(message = "La calificación es obligatoria")
+    @Min(value = 1, message = "La calificación mínima es 1")
+    @Max(value = 5, message = "La calificación máxima es 5")
     private Integer calificacion;
     
     @Column(nullable = false)
+    @NotNull(message = "La fecha de la reseña es obligatoria")
     private LocalDate fechaResenia;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -13,6 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,9 +33,12 @@ public class Catalogo {
     private Long idCatalogo;
 
     @Column(length = 100, nullable = false)
+    @NotBlank(message="El catalogo debe tener un nombre")
+    @Size(max=150, message="el nombre del catalogo no debe superar los 150 caracteres")
     private String nombreCatalogo;
 
     @Column(nullable = false)
+    @NotNull(message = "La fecha no puede ir vacia")
     private LocalDate fechaActualizacion;
 
     @OneToMany(mappedBy = "catalogo", cascade = CascadeType.ALL, orphanRemoval = true)

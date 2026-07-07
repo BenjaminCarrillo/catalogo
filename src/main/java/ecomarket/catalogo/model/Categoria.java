@@ -11,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,9 +30,13 @@ public class Categoria {
     private Long idCategoria;
 
     @Column(length = 100, nullable = false)
+    @NotBlank(message = "La Categoria debe tener nombre")
+    @Size(max=100, message = "el nombre no puede superar los 100 caracteres")
     private String nombreCategoria;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable= false)
+    @NotBlank(message = "La Categoria debe incluir un tipo de Producto")
+    @Size(max=100, message = "el nombre no puede superar los 50 caracteres")
     private String tipoProducto;
 
     @ManyToMany(mappedBy = "categorias")

@@ -18,13 +18,15 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-
 
 @Entity
 @Data
@@ -39,18 +41,28 @@ public class Producto {
     private Long idInventario;
 
     @Column(length = 50)
+    @NotBlank(message = "El Porducto debe tener un tipo")
+    @Size(max=50, message = "el nombre no del tipo de producto no debe superar los 50 caracteres")
     private String tipoProducto;
 
     @Column(length = 150, nullable = false)
+    @NotBlank(message = "El Producto debe tener un nombre")
+    @Size(max=100, message = "el nombre no puede superar los 150 caracteres")
     private String nombre;
 
     @Column(length = 150, nullable = false)
+    @NotBlank(message = "El Producto debe tener una Marca")
+    @Size(max=100, message = "el nombre de la marca no puede superar los 150 caracteres")
     private String marca;
 
     @Column(length = 500)
+    @NotBlank(message = "El Producto debe de tener una Descripcion")
+    @Size(max=100, message = "la descripcion tiene un limite de 500 caracteres")
     private String descripcion;
 
     @Column(nullable = false)
+    @NotNull(message = "El precio es obligatorio")
+    @Positive(message = "El precio debe ser mayor que 0")
     private Integer precioUnitario;
 
     private Boolean estado;

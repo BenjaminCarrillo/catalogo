@@ -46,6 +46,7 @@ class ReseniaControllerIT {
         p.setMarca("Marca1");
         p.setPrecioUnitario(500);
         p.setTipoProducto("ALIMENTO");
+        p.setDescripcion("Producto de prueba"); 
         p.setEstado(true);
         p.setIdInventario(1L);
         return p;
@@ -65,7 +66,6 @@ class ReseniaControllerIT {
     @Test
     void testCrearReseniaSobreProductoExistente201() throws Exception {
         Producto guardado = productoRepository.save(producto());
-
         mockMvc.perform(post("/api/v1/resenias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonResenia(guardado.getIdProducto())))
@@ -85,12 +85,10 @@ class ReseniaControllerIT {
     @Test
     void testListarPorProducto() throws Exception {
         Producto guardado = productoRepository.save(producto());
-
         mockMvc.perform(post("/api/v1/resenias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonResenia(guardado.getIdProducto())))
                 .andExpect(status().isCreated());
-
         mockMvc.perform(get("/api/v1/resenias/producto/" + guardado.getIdProducto()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].calificacion").value(5));
