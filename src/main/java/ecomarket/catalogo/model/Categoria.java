@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,7 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long idCategoria;
 
     @Column(length = 100, nullable = false)

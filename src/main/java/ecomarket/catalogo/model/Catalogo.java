@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +31,7 @@ public class Catalogo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long idCatalogo;
 
     @Column(length = 100, nullable = false)
