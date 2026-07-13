@@ -15,6 +15,8 @@ Microservicio encargado de la gestión del **catálogo de productos** del sistem
 | Base de datos | MySQL (producción) / H2 en memoria (tests) |
 | Actuator | `spring-boot-starter-actuator` |
 | Lombok | Para reducir código repetitivo (getters, setters, constructores) |
+| Bean Validation | `spring-boot-starter-validation` — valida el cuerpo de las peticiones (`@NotBlank`, `@Size`, `@Min`, `@Max`, `@Positive`, etc.) |
+| springdoc-openapi | `springdoc-openapi-starter-webmvc-ui` (2.7.0) — documentación interactiva de la API (Swagger UI) |
 | Maven | Gestión de dependencias y build (incluye wrapper `mvnw`) |
 
 ---
@@ -99,14 +101,31 @@ java -jar target/catalogo-0.0.1-SNAPSHOT.jar
 
 Base URL: `http://localhost:8090`
 
+### Documentación interactiva (Swagger UI)
+
+El servicio expone la documentación OpenAPI de forma interactiva. Con la aplicación corriendo:
+
+- **Swagger UI**: `http://localhost:8090/doc/swagger-ui.html`
+- **Especificación OpenAPI (JSON)**: `http://localhost:8090/v3/api-docs`
+
+Desde ahí se pueden explorar y probar todos los endpoints sin necesidad de un cliente externo.
+
+### Estado del servicio (Actuator)
+
+Gracias a `spring-boot-starter-actuator`, el estado del servicio queda disponible en `http://localhost:8090/actuator/health` (expuesto por defecto), útil para health checks.
+
+### Validación de peticiones
+
+Todas las operaciones `POST` y `PUT` validan el cuerpo antes de guardar. Si algún campo no cumple las reglas (por ejemplo, nombre en blanco, texto que supera el largo máximo, precio no positivo o una calificación de reseña fuera del rango 1–5), el servicio responde **400 (Bad Request)** con el mensaje de validación correspondiente. Por eso las tablas siguientes incluyen `400` en esos métodos.
+
 ### Productos — `/api/v1/productos`
 
 | Método | Ruta | Descripción | Respuestas |
 |---|---|---|---|
 | GET | `/api/v1/productos` | Lista todos los productos | 200 / 204 |
 | GET | `/api/v1/productos/{id}` | Obtiene un producto por id | 200 / 204 |
-| POST | `/api/v1/productos` | Registra un producto | 201 / 409 |
-| PUT | `/api/v1/productos/{id}` | Actualiza un producto | 200 / 404 |
+| POST | `/api/v1/productos` | Registra un producto | 201 / 400 / 409 |
+| PUT | `/api/v1/productos/{id}` | Actualiza un producto | 200 / 400 / 404 |
 | DELETE | `/api/v1/productos/{id}` | Elimina un producto | 204 / 404 |
 | GET | `/api/v1/productos/categoria/{idCategoria}` | Productos de una categoría | 200 / 204 |
 | GET | `/api/v1/productos/buscar?nombre=` | Busca por nombre (contiene, ignora mayúsculas) | 200 / 204 |
@@ -135,7 +154,7 @@ Ejemplo de cuerpo para crear un producto:
 |---|---|---|---|
 | GET | `/api/v1/categorias` | Lista todas las categorías | 200 / 204 |
 | GET | `/api/v1/categorias/{id}` | Obtiene una categoría por id | 200 / 204 |
-| POST | `/api/v1/categorias` | Crea una categoría | 201 / 409 |
+| POST | `/api/v1/categorias` | Crea una categoría | 201 / 400 / 409 |
 | DELETE | `/api/v1/categorias/{id}` | Elimina una categoría | 204 |
 
 ```json
@@ -151,8 +170,8 @@ Ejemplo de cuerpo para crear un producto:
 |---|---|---|---|
 | GET | `/api/v1/resenias` | Lista todas las reseñas | 200 / 204 |
 | GET | `/api/v1/resenias/producto/{idProducto}` | Reseñas de un producto | 200 / 204 |
-| POST | `/api/v1/resenias` | Registra una reseña | 201 / 404 |
-| PUT | `/api/v1/resenias/{id}` | Actualiza una reseña | 200 / 404 |
+| POST | `/api/v1/resenias` | Registra una reseña | 201 / 400 / 404 |
+| PUT | `/api/v1/resenias/{id}` | Actualiza una reseña | 200 / 400 / 404 |
 | DELETE | `/api/v1/resenias/{id}` | Elimina una reseña | 204 |
 
 Al registrar una reseña, el producto referenciado **debe existir**; si no, responde `404`. El cuerpo debe incluir el producto con su id:
@@ -172,8 +191,8 @@ Al registrar una reseña, el producto referenciado **debe existir**; si no, resp
 |---|---|---|---|
 | GET | `/api/v1/catalogos` | Lista todos los catálogos | 200 / 204 |
 | GET | `/api/v1/catalogos/{id}` | Obtiene un catálogo por id | 200 / 204 |
-| POST | `/api/v1/catalogos` | Crea un catálogo | 201 / 409 |
-| PUT | `/api/v1/catalogos/{id}` | Actualiza un catálogo | 200 / 404 |
+| POST | `/api/v1/catalogos` | Crea un catálogo | 201 / 400 / 409 |
+| PUT | `/api/v1/catalogos/{id}` | Actualiza un catálogo | 200 / 400 / 404 |
 | DELETE | `/api/v1/catalogos/{id}` | Elimina un catálogo | 204 |
 
 ```json
