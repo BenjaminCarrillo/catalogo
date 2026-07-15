@@ -193,6 +193,7 @@ Al registrar una reseña, el producto referenciado **debe existir**; si no, resp
 | GET | `/api/v1/catalogos/{id}` | Obtiene un catálogo por id | 200 / 204 |
 | POST | `/api/v1/catalogos` | Crea un catálogo | 201 / 400 / 409 |
 | PUT | `/api/v1/catalogos/{id}` | Actualiza un catálogo | 200 / 400 / 404 |
+| PUT | `/api/v1/catalogos/{id}/productos/{idProducto}` | Agrega un producto existente a un catálogo | 200 / 404 |
 | DELETE | `/api/v1/catalogos/{id}` | Elimina un catálogo | 204 |
 
 ```json
